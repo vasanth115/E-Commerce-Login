@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Login</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container signup-container">
+            <form action="#" autocomplete="off">
+                <h1>CREATE ACCOUNT</h1>
+                <input type="text" placeholder="Name" required id="name1">
+                <input type="email" placeholder="E-Mail" required id="mail1">
+                <input type="text" placeholder="Mobile-Number" required id="M-Number">
+                <input type="password" name="password"  placeholder="Password" required id="password1">
+                <button id="signupbtn">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container signin-container">
+            <form action="" autocomplete="off">
+                <h1>Sign In</h1>
+                <input type="text" placeholder="Name" id="name2" required>
+                <input type="email" placeholder="E-Mail" required id="mail2">
+                <input type="password" name="password"  placeholder="Password" required id="password2">
+               <a href="#" id="SIGNINBTN">Sign In</a>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome To Harvest Hub</h1>
+                    <button class="press" id="signin">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Harvest Hub</h1>
+                    <p>Fresh Fruits and Vegtables Available ! ! !</p>
+                    <button class="press" id="signup">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" >
+        
+
+        let signupbtn = document.getElementById("signup");
+let signinbtn = document.getElementById("signin");
+let container = document.getElementById("container");
+
+signupbtn.addEventListener("click", () => {
+  container.classList.add("right-panel-active");
+});
+
+signinbtn.addEventListener("click", () => {
+  container.classList.remove("right-panel-active");
+});
+
+
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+     import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+  
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDK-3_5E0qUGryoClhScvxJo89XfC15ubk",
+    authDomain: "e-commerce-20d15.firebaseapp.com",
+    projectId: "e-commerce-20d15",
+    storageBucket: "e-commerce-20d15.appspot.com",
+    messagingSenderId: "997889231389",
+    appId: "1:997889231389:web:ce7203a8bf1699206714f4"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+             const db = getDatabase(app);
+
+             document.getElementById("signupbtn").addEventListener('click', function(e){
+              e.preventDefault();
+              set(ref(db, 'user/' + document.getElementById("name1").value),
+              {
+   
+                username: document.getElementById("name1").value,
+                email: document.getElementById("mail1").value,
+                PhoneNumber: document.getElementById("M-Number").value,
+                Password: document.getElementById("password1").value
+
+
+              });
+                alert("Login Sucessfull  !");
+             })
+           
+
+const db1 = getDatabase(app);
+
+function loginUser() {
+    const email = document.getElementById("mail2").value;
+    const name2 = document.getElementById("name2").value;
+    const password = document.getElementById("password2").value;
+
+    // Assuming your database structure is 'user/{email}', check if the user exists
+    const userRef = ref(db1, 'user/' + name2);
+
+    // Get the user data from the database
+    get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+
+            if (userData.email === email && userData.Password === password) {
+                // User authentication successful
+                window.location.href=" https://vasanth115.github.io/E-Commerce/"
+            } else {
+                alert("Incorrect email or password. Please try again.");
+            }
+        } else {
+            alert("User does not exist. Please sign up first.");
+        }
+    }).catch((error) => {
+        console.error("Error getting user data:", error);
+    });
+}
+
+// Add an event listener to the login button
+document.getElementById("SIGNINBTN").addEventListener('click', function(e) {
+    e.preventDefault();
+    loginUser();
+});
+
+
+    </script>
+</body>
+</html>
